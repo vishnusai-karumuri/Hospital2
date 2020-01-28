@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity
 
 
         handler.postDelayed(runnable, 2000); //2000 is the timeout for the splash
+
     }
 
     void getdetails()
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(this, ""+mail, Toast.LENGTH_SHORT).show();
         //Toast.makeText(this, ""+pwd, Toast.LENGTH_SHORT).show();
     }
-    public void login(View v)
+    public void login(View v) throws InterruptedException
     {
         getdetails();
         //validate();

@@ -3,6 +3,7 @@ package com.kvsnbuilds.hospital2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
@@ -20,13 +21,12 @@ public class SignUp extends AppCompatActivity
 {
 
     TextInputEditText et_name, et_uname, et_pwd, et_cnfpwd, et_mail, et_address;
-    String name, mail, pwd, cnfpwd, uname, address;
-    Spinner bloodgroup;
+    String name, mail, pwd, cnfpwd, uname, address, bloodgroup;
+    Spinner sp_bloodgroup;
     FirebaseAuth auth;
     validation validation;
     FirebaseDatabase db;
-    DatabaseReference dbref,userref;
-
+    DatabaseReference dbref, userref;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,14 +42,15 @@ public class SignUp extends AppCompatActivity
         dbref = FirebaseDatabase.getInstance().getReference();
 
         validation = new validation();
-        
+
         et_name = findViewById(R.id.signup_name);
         et_mail = findViewById(R.id.signup_mail);
         et_pwd = findViewById(R.id.signup_pwd);
         et_cnfpwd = findViewById(R.id.signup_confpwd);
         et_uname = findViewById(R.id.signup_uname);
         et_address = findViewById(R.id.signup_address);
-        bloodgroup = findViewById(R.id.signup_spinner_blood_group);
+        sp_bloodgroup = findViewById(R.id.signup_spinner_blood_group);
+
     }
 
     void getdetails()
@@ -60,6 +61,7 @@ public class SignUp extends AppCompatActivity
         cnfpwd = et_cnfpwd.getText().toString().trim();
         mail = et_mail.getText().toString().trim();
         address = et_address.getText().toString().trim();
+        bloodgroup = sp_bloodgroup.getSelectedItem().toString();
     }
 
     @Override
@@ -78,7 +80,8 @@ public class SignUp extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                    writetodb();//to write details to database
+                    Toast.makeText(SignUp.this, "User Created, Data Pushed to DB", Toast.LENGTH_SHORT).show();
                 } else
                 {
                     Toast.makeText(SignUp.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
@@ -90,57 +93,50 @@ public class SignUp extends AppCompatActivity
     void validate()
     {
         int val = validation.evalidation(mail);
-        if(val == 0)
+        if (val == 0)
         {
             et_mail.setError("Username Empty");
             et_mail.requestFocus();
-        }
-        else if(val == 1)
+        } else if (val == 1)
         {
             et_mail.setError("Not A Valid Email Address");
             et_mail.requestFocus();
-        }
-        else if(val == 2)
+        } else if (val == 2)
         {
             Toast.makeText(this, "Valid Email Address", Toast.LENGTH_SHORT).show();
         }
         int val1 = validation.pvalidation(pwd);
-        if(val1 == 0)
+        if (val1 == 0)
         {
             et_pwd.setError("Password Empty");
             et_pwd.requestFocus();
-        }
-        else if(val1 == 1)
+        } else if (val1 == 1)
         {
             et_pwd.setError("Password Must Have alphabet, number, @,#,$,% and must be between 6 to 20 digits");
             et_pwd.requestFocus();
-        }
-        else if(val1 == 2)
+        } else if (val1 == 2)
         {
             Toast.makeText(this, "Valid Password", Toast.LENGTH_SHORT).show();
         }
-        if(!pwd.equals(cnfpwd))
+        if (!pwd.equals(cnfpwd))
         {
             et_pwd.setError("Passwords DONOT Match");
             et_cnfpwd.setError("Passwords DONOT Match");
             et_pwd.requestFocus();
         }
-        if(name.isEmpty())
+        if (name.isEmpty())
         {
             et_name.setError("Name Empty");
             et_name.requestFocus();
-        }
-        else if(uname.isEmpty())
+        } else if (uname.isEmpty())
         {
             et_uname.setError("Username Empty");
             et_uname.requestFocus();
-        }
-        else if(address.isEmpty())
+        } else if (address.isEmpty())
         {
             et_address.setError("Address Is Empty");
             et_address.requestFocus();
-        }
-        else if(cnfpwd.isEmpty())
+        } else if (cnfpwd.isEmpty())
         {
             et_cnfpwd.setError("Password Empty");
             et_cnfpwd.requestFocus();
@@ -149,16 +145,17 @@ public class SignUp extends AppCompatActivity
 
     void writetodb()
     {
-        //Toast.makeText(this, ""+uname, Toast.LENGTH_SHORT).show();
-        dbref.child("Users").child(uname).child("Email").setValue(mail);
-        //userref.child(uname).child("EmailID").setValue(mail);
+        userref = dbref.child("Users").child(uname);
+        userref.child("Name").setValue(name);
+        userref.child("Email").setValue(mail);
+        userref.child("Address").setValue((address));
+        userref.child("BloodGroup").setValue(bloodgroup);
     }
+
     public void signup(View v)
     {
-        getdetails();
-        //validate();
-        writetodb();
-        //Toast.makeText(this, "" + name, Toast.LENGTH_SHORT).show();
-        //createuser();
+        getdetails();//to fetch data from all the fields
+        validate();//to check the regex patterns for mail,pwd and to makesure that no field is empty
+        createuser();//to create user
     }
 }
