@@ -30,10 +30,11 @@ public class MainActivity extends AppCompatActivity
     RelativeLayout rellay1, rellay2;
     TextInputEditText et_uname, et_pwd;
     ImageView iv_logo;
-    String uname, pwd,mail;
+    String uname, pwd, mail;
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference dbref;
+    boolean flag1,flag2;
 
     validation validation;
     Handler handler = new Handler();
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         rellay1 = findViewById(R.id.rellay1);
         rellay2 = findViewById(R.id.rellay2);
@@ -74,43 +77,36 @@ public class MainActivity extends AppCompatActivity
     {
         uname = et_uname.getText().toString().trim();
         pwd = et_pwd.getText().toString();
+        flag1 = true;
+        flag2 = true;
     }
 
     void validate()
     {
-        int val = validation.evalidation(uname);
-        if(val == 0)
+        if(uname.isEmpty())
         {
-            et_uname.setError("Username Empty");
+            et_uname.setError("User Name Field Empty");
             et_uname.requestFocus();
-        }
-        else if(val == 1)
-        {
-            et_uname.setError("Not A Valid Email Address");
-            et_uname.requestFocus();
-        }
-        else if(val == 2)
-        {
-            Toast.makeText(this, "Valid Email Address", Toast.LENGTH_SHORT).show();
+            flag1 = false;
         }
         int val1 = validation.pvalidation(pwd);
-        if(val1 == 0)
+        if (val1 == 0)
         {
             et_pwd.setError("Password Empty");
             et_pwd.requestFocus();
-        }
-        else if(val1 == 1)
+            flag2 = false;
+        } else if (val1 == 1)
         {
             et_pwd.setError("Password Must Have alphabet, number, @,#,$,% and must be between 6 to 20 digits");
             et_pwd.requestFocus();
-        }
-        else if(val1 == 2)
+            flag2 = false;
+        } else if (val1 == 2)
         {
-            Toast.makeText(this, "Valid Password", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Valid Password", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void checkdb()
+    void checkdb_login()
     {
 
         dbref.child("Users").addValueEventListener(new ValueEventListener()
@@ -118,27 +114,27 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                if(dataSnapshot.hasChild(uname))
+                if (dataSnapshot.hasChild(uname))
                 {
                     mail = dataSnapshot.child(uname).child("Email").getValue().toString();
-                    auth.signInWithEmailAndPassword(mail,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                    auth.signInWithEmailAndPassword(mail, pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>()
                     {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task)
                         {
-                            if(task.isSuccessful())
+                            if (task.isSuccessful())
                             {
-                                Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            }
-                            else
+                                    startActivity(new Intent(MainActivity.this, Home.class));
+                                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    finish();
+                            } else
                             {
-                                Toast.makeText(MainActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                     //Toast.makeText(MainActivity.this, ""+mail, Toast.LENGTH_SHORT).show();
-                }
-                else
+                } else
                 {
                     //Toast.makeText(MainActivity.this, "No Such User Exist", Toast.LENGTH_SHORT).show();
                     et_uname.setError("Invalid Username");
@@ -154,25 +150,24 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    void firebaselogin()
-    {
-        //Toast.makeText(this, ""+mail, Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, ""+pwd, Toast.LENGTH_SHORT).show();
-    }
     public void login(View v) throws InterruptedException
     {
         getdetails();
-        //validate();
-        checkdb();
-        firebaselogin();
+        validate();
+        if(flag1  && flag2)
+        {
+            Toast.makeText(this, "Flags Checked", Toast.LENGTH_SHORT).show();
+            checkdb_login();
+        }
     }
 
     public void signup(View v)
     {
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,iv_logo,"trans1");
-        Intent in = new Intent(this,SignUp.class);
-        startActivity(in,activityOptionsCompat.toBundle());
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        //ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, iv_logo, "trans1");
+        //Intent in = new Intent(this, SignUp.class);
+        //startActivity(in, activityOptionsCompat.toBundle());
+        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        startActivity(new Intent(MainActivity.this, SignUp.class));
     }
 
     @Override

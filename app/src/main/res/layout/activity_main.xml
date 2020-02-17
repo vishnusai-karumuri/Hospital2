@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:transitionGroup="true"
+    android:background="#f2f2f2"
     tools:context="com.kvsnbuilds.hospital2.MainActivity">
 
     <RelativeLayout
@@ -16,19 +17,22 @@
         android:layout_marginRight="40dp">
 
         <ImageView
-            android:transitionName="trans1"
             android:id="@+id/imgView_logo"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/hospital" />
+            android:src="@drawable/scan"
+            android:transitionName="trans1" />
 
         <RelativeLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/rellay1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:layout_below="@+id/imgView_logo"
+            android:background="@drawable/rectangle"
             android:visibility="gone">
 
             <TextView
@@ -37,10 +41,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
-                android:paddingLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="Login"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="5.6dp"
+                android:layout_height="275dp"
+                android:background="#38b5f2" />
 
             <LinearLayout
                 android:id="@+id/linlay1"
@@ -48,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_login"
                 android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -66,9 +76,9 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif-light"
-                            android:paddingLeft="5dp"
-                            android:inputType="text"
                             android:hint="Username"
+                            android:inputType="text"
+                            android:paddingLeft="5dp"
                             android:paddingRight="15dp"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
@@ -88,12 +98,12 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/user_pwd"
-                            android:hint="Password"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:inputType="textPassword"
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif-light"
+                            android:hint="Password"
+                            android:inputType="textPassword"
                             android:paddingLeft="5dp"
                             android:paddingRight="15dp"
                             android:textColor="@color/black"
@@ -106,17 +116,18 @@
             </LinearLayout>
 
             <Button
+                android:background="@drawable/bgbtnguide"
+                android:id="@+id/user_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linlay1"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:fontFamily="sans-serif-medium"
+                android:onClick="login"
                 android:paddingLeft="70dp"
                 android:paddingRight="70dp"
                 android:text="Login"
-                android:onClick="login"
-                android:id="@+id/user_login"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -132,25 +143,28 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:visibility="gone">
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/user_signup"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="Create Account"
-            android:id="@+id/user_signup"
             android:onClick="signup"
+            android:background="@drawable/bgbtnguide_green"
+            android:text="Create Account"
             android:textAllCaps="true"
             android:textColor="@color/black" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/user_forgotpassword"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:fontFamily="sans-serif"
+            android:background="@drawable/bgbtnguide_purple"
             android:text="Forgot Password?"
-            android:id="@+id/user_forgotpassword"
             android:textAllCaps="true"
             android:textColor="@color/black" />
 

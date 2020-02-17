@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView 
+<ScrollView
+    android:background="#f2f2f2"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="20dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:transitionGroup="true"
@@ -12,34 +13,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/blue_bg">
+
+            <ImageView
+                android:layout_marginTop="35dp"
+                android:layout_gravity="center"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/person"
+                android:transitionName="trans1"
+                android:id="@+id/signup_logo"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Select Image"
+                android:textSize="15dp"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/hospital"
-            android:transitionName="trans1"
-            android:id="@+id/signup_logo"/>
-
-        <TextView
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Create Account"
-            android:textSize="15dp"
-            android:fontFamily="sans-serif-medium"/>
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintAnimationEnabled="true"
-            android:layout_marginTop="2dp">
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -142,14 +155,19 @@
             android:spinnerMode="dropdown" />
 
         <Button
+            android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SignUP"
             android:onClick="signup"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
             android:textColor="@color/black"
             android:layout_gravity="center"
+            android:background="@drawable/bgbtnguide"
             android:layout_marginTop="10dp"/>
 
+    </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
