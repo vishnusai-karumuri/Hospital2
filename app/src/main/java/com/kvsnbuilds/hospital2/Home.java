@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+
+// TODO: 2/17/2020 get data from firebase on login and display on successsful login
+
 public class Home extends AppCompatActivity
 {
 

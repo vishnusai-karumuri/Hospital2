@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseDatabase db;
     DatabaseReference dbref;
     boolean flag1,flag2;
+    ProgressDialog progressDialog;
 
     validation validation;
     Handler handler = new Handler();
@@ -61,6 +62,9 @@ public class MainActivity extends AppCompatActivity
         et_uname = findViewById(R.id.user_uid);
         et_pwd = findViewById(R.id.user_pwd);
         iv_logo = findViewById(R.id.imgView_logo);
+
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setCancelable(false);
 
         db = FirebaseDatabase.getInstance();
         dbref = db.getReference();
@@ -124,11 +128,13 @@ public class MainActivity extends AppCompatActivity
                         {
                             if (task.isSuccessful())
                             {
+                                    progressDialog.dismiss();
                                     startActivity(new Intent(MainActivity.this, Home.class));
                                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                     finish();
                             } else
                             {
+                                progressDialog.dismiss();
                                 Toast.makeText(MainActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -156,7 +162,9 @@ public class MainActivity extends AppCompatActivity
         validate();
         if(flag1  && flag2)
         {
-            Toast.makeText(this, "Flags Checked", Toast.LENGTH_SHORT).show();
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_dialog);
+            //Toast.makeText(this, "Flags Checked", Toast.LENGTH_SHORT).show();
             checkdb_login();
         }
     }

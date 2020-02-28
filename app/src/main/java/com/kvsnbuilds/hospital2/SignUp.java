@@ -33,6 +33,7 @@ public class SignUp extends AppCompatActivity
     FirebaseDatabase db;
     DatabaseReference dbref, userref;
     boolean f1, f2, f3, f4, f5, f6, f7;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,6 +51,9 @@ public class SignUp extends AppCompatActivity
         dbref = FirebaseDatabase.getInstance().getReference();
 
         validation = new validation();
+
+        progressDialog = new ProgressDialog(SignUp.this);
+        progressDialog.setCancelable(false);
 
         et_name = findViewById(R.id.signup_name);
         et_mail = findViewById(R.id.signup_mail);
@@ -96,9 +100,11 @@ public class SignUp extends AppCompatActivity
             {
                 if(task.isSuccessful())
                 {
+
                     writetodb();//to write details to database
                     ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SignUp.this, image, "trans1");
                     Intent in = new Intent(SignUp.this, Home.class);
+                    progressDialog.dismiss();
                     startActivity(in, activityOptionsCompat.toBundle());
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
@@ -106,6 +112,7 @@ public class SignUp extends AppCompatActivity
                 }
                 else
                 {
+                    progressDialog.dismiss();
                     Toast.makeText(SignUp.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -189,6 +196,8 @@ public class SignUp extends AppCompatActivity
 
     public void signup(View v)
     {
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
         getdetails();//to fetch data from all the fields
         validate();//to check the regex patterns for mail,pwd and to makesure that no field is empty
         Toast.makeText(this, "" + f1, Toast.LENGTH_SHORT).show();
